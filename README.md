@@ -4,7 +4,7 @@ AI Email Copilot - Chrome extension that helps you respond to emails using AI. S
 Powered by OpenAI's GPT-4o model, this extension requires your OpenAI API key for operation. You'll be prompted to enter your API key during the first use - this ensures your data privacy and gives you full control over the API usage.
 
 _Note: You'll need an OpenAI API key with GPT-4o access to use this extension. The key is stored locally in your browser and is never shared with third parties._
-
-
-*Acknowledgments:*
+ 
+ 
+### Acknowledgments:
 - Extension icon: Email icons created by HideMaru - Flaticon
