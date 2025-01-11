@@ -14,10 +14,12 @@
     "scripting"
   ],
   "action": {
-    "default_popup": "popup.html",
     "default_icon": {
       "48": "icons/mail48.png"
     }
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "host_permissions": ["https://api.openai.com/*"]
 }
