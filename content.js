@@ -49,7 +49,7 @@ async function showDialog() {
 }
 
 function setupDragging(dialog) {
-  const header = dialog.querySelector('.header');
+  const header = dialog.querySelector('.header-aec');
   let isDragging = false;
   let currentX;
   let currentY;
@@ -105,7 +105,7 @@ function setupDialogFunctionality(dialog) {
   // Показываем выделенный текст
   const selectedText = getSelectedText();
   if (selectedText) {
-    selectedTextInfo.textContent = `Selected text: ${selectedText}`;
+    selectedTextInfo.textContent = `Context: ${selectedText}`;
     selectedTextInfo.style.display = 'block';
   } else {
     selectedTextInfo.style.display = 'none';
