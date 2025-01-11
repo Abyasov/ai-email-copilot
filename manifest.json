@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "AI Email Copilot",
+  "version": "0.1",
+  "description": "AI Email Copilot - Chrome extension that helps you respond to emails using AI. Simply highlight the email text, click the icon, and describe in your native language how you want to respond. The AI assistant will generate a professional reply in the original language of correspondence.",
+  "icons": {
+    "16": "icons/mail16.png",
+    "48": "icons/mail48.png",
+    "128": "icons/mail128.png"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/mail48.png"
+    }
+  },
+  "host_permissions": ["https://api.openai.com/*"]
+}
