@@ -21,5 +21,9 @@
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions": ["https://api.openai.com/*"]
+  "host_permissions": ["https://api.openai.com/*"],
+  "web_accessible_resources": [{
+    "resources": ["dialog.html"],
+    "matches": ["<all_urls>"]
+  }]
 }

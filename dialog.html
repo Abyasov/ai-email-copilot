@@ -1,0 +1,169 @@
+<div id="email-copilot-block">
+  <div class="header">
+    <div class="header-left">
+      <span id="back-button" style="display: none;">←</span>
+      <span class="title">Email Copilot</span>
+    </div>
+    <div class="header-controls">
+      <span id="settings-toggle">⚙️</span>
+      <span class="close-button">&times;</span>
+    </div>
+  </div>
+  
+  <div id="settings-panel" style="display: none;">
+    <input type="text" id="apikey-input" placeholder="Enter your OpenAI API key">
+    <button id="save-settings">Save</button>
+  </div>
+
+  <div id="input-screen">
+    <textarea id="instruction-input" placeholder="Enter your instructions..."></textarea>
+    <button id="send-button">Send</button>
+    <div id="selected-text-info" style="display: none;"></div>
+  </div>
+  
+  <div id="output-screen" style="display: none;">
+    <div id="response-output"></div>
+    <button id="copy-button">Copy response</button>
+  </div>
+</div>
+
+<style>
+  #email-copilot-block {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    resize: both;
+    overflow-y: auto; 
+    overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .header {
+    cursor: move;
+    background-color: #f1f1f1;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #settings-toggle {
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 18px;
+  }
+
+  .close-button {
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  #settings-panel {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    border-top: 2px solid #ccc;
+    background-color: #fff5b7;
+  }
+
+  #apikey-input {
+    min-width: 70%;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+
+  
+  #instruction-input {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    overflow-y: auto;
+  }
+
+  #selected-text-info {
+    display: none; 
+    flex: 1;
+    margin: 10px; 
+    padding: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+    color: #636363;
+    font-size: smaller;
+    overflow-y: auto;
+  }
+  
+  #send-button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #response-output {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: smaller;
+  }
+
+  #response-output::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #response-output::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.2);
+    border-radius: 3px;
+  }
+
+  #copy-button {
+    display: none;
+    margin: 10px;
+    padding: 5px 10px;
+  }
+
+  #back-button {
+    cursor: pointer;
+    font-size: 20px;
+    margin-right: 10px;
+    padding: 0 5px;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  #input-screen, #output-screen {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  #output-screen {
+    height: 100%;
+  }
+
+  #response-output {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
+    overflow-y: auto;
+  }
+</style> 

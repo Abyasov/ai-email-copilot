@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const settingsToggle = document.getElementById('settingsToggle');
-  const settingsPanel = document.getElementById('settingsPanel');
+  const settingsToggle = document.getElementById('settings-toggle');
+  const settingsPanel = document.getElementById('settings-panel');
   const apiKeyInput = document.getElementById('apiKey');
-  const saveSettings = document.getElementById('saveSettings');
+  const saveSettings = document.getElementById('save-settings');
 
   // Loading the saved API key
   chrome.storage.local.get('apiKey', (data) => {
