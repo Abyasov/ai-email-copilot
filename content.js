@@ -148,6 +148,7 @@ function setupDialogFunctionality(dialog) {
     inputScreen.style.display = 'flex';
     outputScreen.style.display = 'none';
     backButton.style.display = 'none';
+    input.focus();
   }
 
   function showOutputScreen() {
@@ -278,4 +279,7 @@ You MUST ALWAYS:
       }
     });
   }
+
+  // Устанавливаем фокус на поле ввода
+  input.focus();
 }
