@@ -1,4 +1,3 @@
-// Сразу вызываем функцию при загрузке скрипта
 (async function initDialog() {
   try {
     console.log('Initializing dialog...');
@@ -9,7 +8,7 @@
 })();
 
 async function showDialog() {
-  // Проверяем, не открыт ли уже диалог
+  // Check if dialog is already open
   if (document.getElementById('email-copilot-block')) {
     console.log('Dialog already exists');
     return;
@@ -20,26 +19,26 @@ async function showDialog() {
     const response = await fetch(templateUrl);
     const html = await response.text();
     
-    // Создаем временный контейнер
+    // Create a temporary container
     const template = document.createElement('div');
     template.innerHTML = html;
     
-    // Извлекаем стили из template и добавляем их в head
+    // Extract styles from template and add them to head
     const styles = template.querySelector('style');
     if (styles) {
       document.head.appendChild(styles);
     }
     
-    // Извлекаем сам диалог
+    // Extract the dialog itself
     const dialog = template.querySelector('#email-copilot-block');
     if (!dialog) {
       throw new Error('Dialog element not found in template');
     }
 
-    // Добавляем диалог на страницу
+    // Add the dialog to the page
     document.body.appendChild(dialog);
     
-    // Настраиваем функциональность
+    // Setup functionality
     setupDragging(dialog);
     setupDialogFunctionality(dialog);
   } catch (error) {
@@ -102,7 +101,7 @@ function setupDialogFunctionality(dialog) {
   const inputScreen = dialog.querySelector('#input-screen');
   const outputScreen = dialog.querySelector('#output-screen');
 
-  // Показываем выделенный текст
+  // Show selected text
   const selectedText = getSelectedText();
   if (selectedText) {
     selectedTextInfo.textContent = `Context: ${selectedText}`;
@@ -111,31 +110,31 @@ function setupDialogFunctionality(dialog) {
     selectedTextInfo.style.display = 'none';
   }
 
-  // Загружаем сохраненный API ключ
+  // Load saved API key
   chrome.storage.local.get('apiKey', (data) => {
     if (data.apiKey) {
       apiKeyInput.value = data.apiKey;
     }
   });
 
-  // Закрытие диалога
+  // Close dialog
   closeButton.addEventListener('click', () => {
     dialog.remove();
   });
 
-  // Закрытие диалога по Esc
+  // Close dialog by Esc
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && document.contains(dialog)) {
       dialog.remove();
     }
   });
 
-  // Настройки
+  // Settings
   settingsToggle?.addEventListener('click', () => {
     settingsPanel.style.display = settingsPanel.style.display === 'block' ? 'none' : 'block';
   });
 
-  // Сохранение API ключа
+  // Save API key
   saveSettings?.addEventListener('click', () => {
     chrome.storage.local.set({ apiKey: apiKeyInput.value }, () => {
       alert('API key saved');
@@ -143,7 +142,7 @@ function setupDialogFunctionality(dialog) {
     });
   });
 
-  // Функция переключения экранов
+  // Function to switch screens
   function showInputScreen() {
     inputScreen.style.display = 'flex';
     outputScreen.style.display = 'none';
@@ -157,10 +156,10 @@ function setupDialogFunctionality(dialog) {
     backButton.style.display = 'block';
   }
 
-  // Обработчик кнопки "назад"
+  // Back button handler
   backButton.addEventListener('click', showInputScreen);
 
-  // Отправка запроса
+  // Send request
   sendButton.addEventListener('click', async () => {
     const originalButtonText = sendButton.textContent;
     sendButton.textContent = 'Loading...';
@@ -181,7 +180,6 @@ function setupDialogFunctionality(dialog) {
     }
 
     try {
-      // Показываем экран с ответом
       showOutputScreen();
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -253,7 +251,7 @@ You MUST ALWAYS:
         }
       }
     } catch (error) {
-      showInputScreen(); // В случае ошибки возвращаемся к экрану ввода
+      showInputScreen();
       output.textContent = 'Failed to fetch from OpenAI API. Check your API key or internet connection.';
       if (copyButton) {
         copyButton.style.display = 'none';
@@ -264,7 +262,7 @@ You MUST ALWAYS:
     }
   });
 
-  // Копирование ответа
+  // Copy answer
   if (copyButton) {
     copyButton.addEventListener('click', async () => {
       try {
@@ -280,6 +278,5 @@ You MUST ALWAYS:
     });
   }
 
-  // Устанавливаем фокус на поле ввода
   input.focus();
 }
