@@ -76,14 +76,12 @@ function getEmailContent() {
 
   const emailTitle = emailTitleElement ? emailTitleElement.innerText : '';
   const emailText = emailTextElement ? emailTextElement.innerText
-      // Чистистим текст письма
-      // Удаляем двойные пробелы рекурсивно
+      // Remove double spaces recursively
       .replace(/ {2,}/g, ' ')
-      // Cхлопываем строки содержащие только пробелы, точки или запятые
+      // Collapse lines containing only spaces, dots, or commas
       .replace(/(\n)\s*[.,\s]+\n/g, '\n')
-      // Убираем двойные переносы строк рекурсивно
+      // Remove double line breaks recursively
       .replace(/\n{2,}/g, '\n')
-      // Убираем пробелы в начале и конце текста
       .trim() : '';
 
   return {
