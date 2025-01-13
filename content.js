@@ -3,7 +3,7 @@
     console.log('Initializing dialog...');
     await showDialog();
   } catch (error) {
-    console.error('Failed to initialize dialog:', error);
+    console.error('Failed to initialize extention dialog:', error);
   }
 })();
 
@@ -47,6 +47,52 @@ async function showDialog() {
   }
 }
 
+
+function getSelectedText() {
+  const selection = window.getSelection().toString().trim();
+  if (selection) {
+    return selection;
+  }
+  
+  const emailContent = getEmailContent();
+  if (!emailContent) {
+    return '';
+  }
+  const { title, text } = emailContent;
+  if (title && text) {
+    return `Subj: ${title}\nEmail text:${text}`;
+  } else if (title) {
+    return `Subj: ${title}`;
+  } else if (text) {
+    return `Email text:${text}`;
+  }
+  
+  return '';
+}
+
+function getEmailContent() {
+  const emailTitleElement = document.querySelector('.zmPVHeading.jsConvSB');
+  const emailTextElement = document.querySelector('.zmMailContent');
+
+  const emailTitle = emailTitleElement ? emailTitleElement.innerText : '';
+  const emailText = emailTextElement ? emailTextElement.innerText
+      // Чистистим текст письма
+      // Удаляем двойные пробелы рекурсивно
+      .replace(/ {2,}/g, ' ')
+      // Cхлопываем строки содержащие только пробелы, точки или запятые
+      .replace(/(\n)\s*[.,\s]+\n/g, '\n')
+      // Убираем двойные переносы строк рекурсивно
+      .replace(/\n{2,}/g, '\n')
+      // Убираем пробелы в начале и конце текста
+      .trim() : '';
+
+  return {
+      title: emailTitle,
+      text: emailText
+  };
+}
+
+
 function setupDragging(dialog) {
   const header = dialog.querySelector('.header-aec');
   let isDragging = false;
@@ -78,9 +124,7 @@ function setupDragging(dialog) {
   });
 }
 
-function getSelectedText() {
-  return window.getSelection().toString().trim();
-}
+
 
 function setupDialogFunctionality(dialog) {
   const closeButton = dialog.querySelector('.close-button');
@@ -104,7 +148,7 @@ function setupDialogFunctionality(dialog) {
   // Show selected text
   const selectedText = getSelectedText();
   if (selectedText) {
-    selectedTextInfo.textContent = `Context: ${selectedText}`;
+    selectedTextInfo.textContent = `${selectedText}`;
     selectedTextInfo.style.display = 'block';
   } else {
     selectedTextInfo.style.display = 'none';
