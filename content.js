@@ -98,7 +98,50 @@ async function showDialog() {
 }
 
 
-function getSelectedText() {
+function processEmailText(text) {
+  return text
+    // Remove double spaces recursively
+    .replace(/ {2,}/g, ' ')
+    // Collapse lines containing only spaces, dots, or commas
+    .replace(/(\n)\s*[.,\s]+\n/g, '\n')
+    // Remove double line breaks recursively
+    .replace(/\n{2,}/g, '\n')
+    .trim();
+}
+
+function getEmailContent() {
+  // Setup order to check: Gmail, Outlook, Zoho
+  const services = [
+      {
+          name: 'Gmail',
+          titleSelector: '.hP',
+          textSelector: '.ii.gt'
+      },
+      {
+          name: 'Outlook',
+          titleSelector: 'div[role="main"] div[role="heading"]',
+          textSelector: 'div[role="main"] div[role="document"]'
+      },
+      {
+          name: 'Zoho',
+          titleSelector: '.zmPVHeading.jsConvSB',
+          textSelector: '.zmMailContent'
+      }
+  ];
+
+  for (const service of services) {
+    const titleElement = document.querySelector(service.titleSelector);
+    const textElement = document.querySelector(service.textSelector);
+
+    if (titleElement && textElement) {
+      const emailTitle = titleElement.innerText;
+      const emailText = textElement.innerText;
+      return { title: emailTitle, text: emailText };
+    };
+  };
+}
+
+function getContext() {
   const selection = window.getSelection().toString().trim();
   if (selection) {
     return selection;
@@ -120,25 +163,7 @@ function getSelectedText() {
   return '';
 }
 
-function getEmailContent() {
-  const emailTitleElement = document.querySelector('.zmPVHeading.jsConvSB');
-  const emailTextElement = document.querySelector('.zmMailContent');
 
-  const emailTitle = emailTitleElement ? emailTitleElement.innerText : '';
-  const emailText = emailTextElement ? emailTextElement.innerText
-      // Remove double spaces recursively
-      .replace(/ {2,}/g, ' ')
-      // Collapse lines containing only spaces, dots, or commas
-      .replace(/(\n)\s*[.,\s]+\n/g, '\n')
-      // Remove double line breaks recursively
-      .replace(/\n{2,}/g, '\n')
-      .trim() : '';
-
-  return {
-      title: emailTitle,
-      text: emailText
-  };
-}
 
 
 function setupDragging(dialog) {
@@ -178,7 +203,7 @@ function setupDialogFunctionality(dialog) {
   const closeButton = dialog.querySelector('.close-button');
   
   const input = dialog.querySelector('#instruction-input');
-  const selectedTextInfo = dialog.querySelector('#selected-text-info');
+  const contextBlock = dialog.querySelector('#context-block');
   const sendButton = dialog.querySelector('#send-button');
   
   const output = dialog.querySelector('#response-output');
@@ -193,13 +218,13 @@ function setupDialogFunctionality(dialog) {
   const inputScreen = dialog.querySelector('#input-screen');
   const outputScreen = dialog.querySelector('#output-screen');
 
-  // Show selected text
-  const selectedText = getSelectedText();
-  if (selectedText) {
-    selectedTextInfo.textContent = `${selectedText}`;
-    selectedTextInfo.style.display = 'block';
+  // Show selected or email text
+  const context = getContext();
+  if (context) {
+    contextBlock.textContent = `${context}`;
+    contextBlock.style.display = 'block';
   } else {
-    selectedTextInfo.style.display = 'none';
+    contextBlock.style.display = 'none';
   }
 
   // Load saved API key
@@ -258,7 +283,7 @@ function setupDialogFunctionality(dialog) {
     sendButton.disabled = true;
     output.textContent = '';
 
-    const prompt = `###The customer's email text###\n${selectedText}\n\n###The assignment from the Maker###\n${input.value}`;
+    const prompt = `###Сlient wrote:###\n${context}\n\n###Task:###\n${input.value}`;
 
     const key = await new Promise((resolve) => {
       chrome.storage.local.get('apiKey', (data) => resolve(data.apiKey));
